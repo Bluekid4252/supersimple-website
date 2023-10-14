@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PamodoroTimer</title>
+  <style>
+    body{
+      box-sizing: border-box;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container{
+      margin: 0 auto;
+      max-width: 400px;
+      text-align: center;
+      padding: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+
+    }
+    .title{
+      font-size: 1.9rem;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    #timer{
+      font-size: 2.9rem;
+      font-weight: 720;
+      color: #2c3e50;
+    }
+    button{
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin: 10px;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      text-transform: uppercase;
+      transition: all .3s ease-in-out;
+    }
+    button:hover{
+      opacity: .7;
+      cursor: default;
+    }
+    button[disabled]{
+      opacity: .5;
+    }
+    #start{
+      background-color: #27ae60;
+    }
+    #stop{
+      background-color: #c0392b;
+    }
+    #reset{
+      background-color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Pamodoro Timer</h1>
+    <p class="timer" id="timer">25:00</p>
+  <div class="button-wrapper">
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+  </div>
+  </div>
+
+  <script>
+     const startEl = document.getElementById("start");
+     const stopEl = document.getElementById("stop");
+     const resetEl = document.getElementById("reset");
+     const timerEl = document.getElementById("timer");
+
+    let timerInterval;
+    let timeLeft = 1500;
+
+    function updateTime(){
+      let minutes = Math.floor((timeLeft/60));
+      let seconds = timeLeft % 60;
+      let formattedTime = `${minutes.toString().padStart(2,"0")}:${seconds.toString().padStart(2,"0")}`;
+      timerEl.innerHTML = formattedTime;
+    }
+     function startTimer(){
+      timerInterval = setInterval(() =>{
+        timeLeft--;
+        if(timeLeft === 0){
+          clearInterval(timerInterval);
+          alert("Time's up!")
+        }
+        updateTime();
+
+        startEl.disabled = true;
+        stopEl.disabled = false;
+      },1000)
+     }
+     function stopTimer(){
+      clearInterval(timerInterval);
+      startEl.textContent = "continue";
+      startEl.disabled = false;
+      stopEl.disabled = true;
+     }
+     function resetTimer(){
+      clearInterval(timerInterval);
+      timeLeft = 1500;
+      updateTime();
+      stopEl.disabled = true;
+      startEl.disabled = false;
+      startEl.textContent = "start";
+
+     }
+     startEl.addEventListener("click",startTimer);
+     stopEl.addEventListener("click",stopTimer);
+     resetEl.addEventListener("click",resetTimer);
+
+  </script>
+</body>
+</html>
